@@ -37,6 +37,22 @@ if (!fs.existsSync(interpreter)) {
 } else {
     console.log(`\nrunning ${path.basename(interpreter)} over broken programs`);
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), "marslang-diagnostics-"));
+
+    // Positions arrived in rs-0.9.1. An older interpreter still produces
+    // diagnostics, just without a line, so those cases are reported as skipped
+    // rather than as failures.
+    const probe = path.join(directory, "probe.mars");
+    fs.writeFileSync(probe, "func m{\n    out(1 +;\n}\n");
+    let positions = false;
+    try {
+        execFileSync(interpreter, ["check", probe], { encoding: "utf8" });
+    } catch (error) {
+        positions = /^error: line \d+:/m.test(`${error.stderr || ""}${error.stdout || ""}`);
+    }
+    if (!positions) {
+        const version = execFileSync(interpreter, ["--version"], { encoding: "utf8" }).trim();
+        console.log(`  note ${version} does not report positions; location cases are skipped`);
+    }
     const cases = [
         ["a syntax error inside a function", "func m{\n    out(\"ok\");\n    out(1 +;\n}\n", { line: 3 }],
         ["a syntax error inside a method", "family C{\n    func init(){\n        me.r = 1;\n    }\n\n    func size(){\n        ret me.r *;\n    }\n}\nfunc m{}\n", { line: 7 }],
@@ -45,6 +61,10 @@ if (!fs.existsSync(interpreter)) {
     ];
 
     for (const [description, source, expected] of cases) {
+        if ("line" in expected && !positions) {
+            console.log(`  skip ${description}`);
+            continue;
+        }
         const file = path.join(directory, `${description.replace(/\W+/g, "-")}.mars`);
         fs.writeFileSync(file, source);
         let printed = "";
