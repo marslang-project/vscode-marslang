@@ -1,0 +1,105 @@
+{
+  "name": "marslang",
+  "displayName": "Marslang",
+  "description": "Marslang language support: syntax highlighting, and diagnostics from marslang check.",
+  "version": "0.1.0",
+  "publisher": "marslang-project",
+  "license": "SEE LICENSE IN README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marslang-project/vscode-marslang.git"
+  },
+  "homepage": "https://marslang.kevin-z.com",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Snippets"
+  ],
+  "keywords": [
+    "marslang",
+    "mars"
+  ],
+  "main": "./src/extension.js",
+  "activationEvents": [
+    "onLanguage:marslang"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "marslang",
+        "aliases": [
+          "Marslang",
+          "marslang"
+        ],
+        "extensions": [
+          ".mars",
+          ".mrs"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "marslang",
+        "scopeName": "source.mars",
+        "path": "./syntaxes/marslang.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "marslang",
+        "path": "./snippets/marslang.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "marslang.runFile",
+        "title": "Marslang: Run File",
+        "icon": "$(play)"
+      },
+      {
+        "command": "marslang.checkFile",
+        "title": "Marslang: Check File"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "marslang.runFile",
+          "when": "resourceLangId == marslang",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Marslang",
+      "properties": {
+        "marslang.path": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the marslang executable. Empty looks for marslang on PATH, then in the directory the installer uses."
+        },
+        "marslang.check": {
+          "type": "string",
+          "enum": [
+            "onSave",
+            "off"
+          ],
+          "default": "onSave",
+          "description": "When to run marslang check and report its errors. A file is also checked when it is opened."
+        }
+      }
+    }
+  },
+  "devDependencies": {
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.0.0"
+  },
+  "scripts": {
+    "test": "node test/grammar.test.js && node test/diagnostics.test.js",
+    "package": "npx --yes @vscode/vsce package --no-dependencies"
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Marslang",
+  "scopeName": "source.mars",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#import" },
+    { "include": "#decorator" },
+    { "include": "#family" },
+    { "include": "#function" },
+    { "include": "#keywords" },
+    { "include": "#builtins" },
+    { "include": "#annotation" },
+    { "include": "#numbers" },
+    { "include": "#call" },
+    { "include": "#operators" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.mars",
+          "begin": "//",
+          "end": "$"
+        },
+        {
+          "name": "comment.block.mars",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "import": {
+      "match": "\\b(takepkg)\\s+([A-Za-z_][A-Za-z0-9_.]*|\\.+[A-Za-z_][A-Za-z0-9_.]*)(?:\\s*(=)\\s*([A-Za-z_][A-Za-z0-9_]*|\\*))?",
+      "captures": {
+        "1": { "name": "keyword.control.import.mars" },
+        "2": { "name": "entity.name.namespace.mars" },
+        "3": { "name": "keyword.operator.assignment.mars" },
+        "4": { "name": "variable.other.alias.mars" }
+      }
+    },
+    "decorator": {
+      "match": "(@)([A-Za-z_][A-Za-z0-9_]*)(\\.)([A-Za-z_][A-Za-z0-9_]*)",
+      "captures": {
+        "1": { "name": "punctuation.definition.decorator.mars" },
+        "2": { "name": "entity.name.namespace.mars" },
+        "3": { "name": "punctuation.accessor.mars" },
+        "4": { "name": "entity.name.function.decorator.mars" }
+      }
+    },
+    "family": {
+      "match": "\\b(family)\\s+([A-Za-z_][A-Za-z0-9_]*)(?:\\s*(:)\\s*([A-Za-z_][A-Za-z0-9_]*))?",
+      "captures": {
+        "1": { "name": "keyword.declaration.family.mars" },
+        "2": { "name": "entity.name.type.family.mars" },
+        "3": { "name": "punctuation.separator.inheritance.mars" },
+        "4": { "name": "entity.other.inherited-class.mars" }
+      }
+    },
+    "function": {
+      "match": "\\b(func)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+      "captures": {
+        "1": { "name": "keyword.declaration.function.mars" },
+        "2": { "name": "entity.name.function.mars" }
+      }
+    },
+    "annotation": {
+      "comment": "A type in parentheses: x (array[int]) = ...; and parameter types.",
+      "match": "\\b(int|longint|float|string|bool|array|set|pair|map|dict)\\b",
+      "name": "support.type.mars"
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.mars",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [{ "include": "#escapes" }]
+        },
+        {
+          "name": "string.quoted.single.mars",
+          "begin": "'",
+          "end": "'",
+          "patterns": [{ "include": "#escapes" }]
+        }
+      ]
+    },
+    "escapes": {
+      "patterns": [
+        { "name": "constant.character.escape.mars", "match": "\\\\(?:[nrt0\\\\\"']|u[0-9A-Fa-f]{4})" },
+        { "name": "invalid.illegal.unknown-escape.mars", "match": "\\\\." }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        { "name": "constant.numeric.float.mars", "match": "\\b\\d[\\d_]*\\.\\d[\\d_]*(?:[eE][+-]?\\d+)?\\b" },
+        { "name": "constant.numeric.integer.mars", "match": "\\b\\d[\\d_]*\\b" }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.mars",
+          "match": "\\b(if|elif|else|while|repeat|for|break|continue|ret|run|handle|then)\\b"
+        },
+        {
+          "name": "storage.modifier.mars",
+          "match": "\\b(fixed|hot|cold)\\b"
+        },
+        {
+          "name": "keyword.declaration.mars",
+          "match": "\\b(func|family|takepkg)\\b"
+        },
+        {
+          "name": "constant.language.mars",
+          "match": "\\b(true|false|fasle|null)\\b"
+        },
+        {
+          "name": "variable.language.me.mars",
+          "match": "\\bme\\b"
+        }
+      ]
+    },
+    "builtins": {
+      "patterns": [
+        {
+          "comment": "Error families, which handle() catches by name.",
+          "name": "support.class.error.mars",
+          "match": "\\b(Error|TypeError|RangeError|OutOfBoundsError|SyntaxError)\\b"
+        },
+        {
+          "name": "support.function.builtin.mars",
+          "match": "\\b(out|slout|in|inln|arr|set|pair|map|dict|err|lasterr|a|s|p)\\b(?=\\s*\\()"
+        }
+      ]
+    },
+    "call": {
+      "patterns": [
+        {
+          "comment": "package.member(...) and receiver.method(...)",
+          "match": "([A-Za-z_][A-Za-z0-9_]*)(\\.)([A-Za-z_][A-Za-z0-9_]*)(?=\\s*\\()",
+          "captures": {
+            "1": { "name": "variable.other.object.mars" },
+            "2": { "name": "punctuation.accessor.mars" },
+            "3": { "name": "entity.name.function.call.mars" }
+          }
+        },
+        {
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)(?=\\s*\\()",
+          "name": "entity.name.function.call.mars"
+        },
+        {
+          "match": "(\\.)([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "punctuation.accessor.mars" },
+            "2": { "name": "variable.other.property.mars" }
+          }
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        { "name": "keyword.operator.arrow.mars", "match": "=>" },
+        { "name": "keyword.operator.comparison.mars", "match": "==|!=|<=|>=|<|>" },
+        { "name": "keyword.operator.assignment.mars", "match": "=" },
+        { "name": "keyword.operator.arithmetic.mars", "match": "\\+|-|\\*|/|%" },
+        { "name": "keyword.operator.logical.mars", "match": "&&|\\|\\||!" }
+      ]
+    }
+  }
+}

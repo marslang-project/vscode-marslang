@@ -1,0 +1,36 @@
+# Tokenize the sample with the real TextMate engine, then check diagnostics
+# against a released interpreter, so a change in either one shows up here.
+name: test
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - run: npm install
+
+      - name: Install the Marslang interpreter
+        run: |
+          curl -fsSL https://marslang.kevin-z.com/install.sh | sh -s -- --no-path
+          echo "MARSLANG=$HOME/.marslang/bin/marslang" >> "$GITHUB_ENV"
+
+      - run: npm test
+
+      - name: Package the extension
+        run: npm run package
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vsix
+          path: "*.vsix"

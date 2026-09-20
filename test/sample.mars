@@ -1,0 +1,39 @@
+takepkg std.math;
+takepkg std.Decorator;
+
+// a comment
+/* a block
+   comment */
+
+fixed hot pi (float) = 3.14159;
+
+family Circle{
+    func init(float r){
+        me.r = r;
+    }
+
+    @Decorator.private
+    func squared(){
+        ret me.r * me.r;
+    }
+
+    func size(){
+        ret pi * me.squared();
+    }
+}
+
+func label(string name) => "a family of func in a string";
+
+func m{
+    counts (array[int]) = arr(42, 7);
+    c = Circle(2.0);
+    run {
+        out(c.size());
+        out(counts.iget(0));
+        out(label("x"));
+    } handle(TypeError e){
+        out(e);
+    } then {
+        slout("done");
+    }
+}

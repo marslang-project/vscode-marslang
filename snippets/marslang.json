@@ -1,0 +1,55 @@
+{
+  "Entry point": {
+    "prefix": "m",
+    "body": ["func m{", "\t$0", "}"],
+    "description": "The function a program starts from"
+  },
+  "Function": {
+    "prefix": "func",
+    "body": ["func ${1:name}(${2:int a}){", "\t$0", "}"],
+    "description": "A function with a block body"
+  },
+  "Expression function": {
+    "prefix": "funce",
+    "body": ["func ${1:name}(${2:int a}) => $0;"],
+    "description": "A function whose body is one expression"
+  },
+  "Family": {
+    "prefix": "family",
+    "body": [
+      "family ${1:Name}{",
+      "\tfunc init(${2:int value}){",
+      "\t\tme.${3:value} = ${2:value};",
+      "\t}",
+      "$0",
+      "}"
+    ],
+    "description": "A family with a constructor"
+  },
+  "Private method": {
+    "prefix": "private",
+    "body": ["@Decorator.private", "func ${1:name}(){", "\t$0", "}"],
+    "description": "A method only this family can call"
+  },
+  "Run and handle": {
+    "prefix": "run",
+    "body": [
+      "run {",
+      "\t$0",
+      "} handle(${1:TypeError} e){",
+      "\tout(e);",
+      "}"
+    ],
+    "description": "Catch errors of a kind"
+  },
+  "For each": {
+    "prefix": "for",
+    "body": ["for (${1:item}, ${2:items}){", "\t$0", "}"],
+    "description": "Iterate a collection"
+  },
+  "Import": {
+    "prefix": "takepkg",
+    "body": ["takepkg ${1:std.math};"],
+    "description": "Import a package"
+  }
+}
