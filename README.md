@@ -38,7 +38,7 @@ each keystroke.
 npm install
 npm test
 npm run package
-code --install-extension marslang-0.1.0.vsix
+code --install-extension marslang-0.2.0.vsix
 ```
 
 `npm test` tokenizes [test/sample.mars](test/sample.mars) with the same

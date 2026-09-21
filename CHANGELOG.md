@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0
+
+- Licensed under the Marslang Source License 1.0: source-available, free for
+  noncommercial use, with changes allowed for contributions. See LICENSE.md.
+- Marketplace listing: the Marslang planet icon, a gallery banner, and a link
+  for reporting issues.
+- Diagnostics land on the reported line with rs-0.9.1 and later.
+
 ## 0.1.0
 
 First release.

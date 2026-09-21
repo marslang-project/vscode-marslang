@@ -2,7 +2,7 @@
   "name": "marslang",
   "displayName": "Marslang",
   "description": "Marslang language support: syntax highlighting, and diagnostics from marslang check.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "marslang-project",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
