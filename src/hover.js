@@ -8,8 +8,8 @@
 const BUILTINS = {
     out: ["func out(...values)", "Writes the values separated by spaces, then a newline."],
     slout: ["func slout(...values)", "Writes the values without a newline."],
-    in: ["func in() -> string", "Reads one word from standard input."],
-    inln: ["func inln() -> string", "Reads one line from standard input."],
+    in: ["func in() -> string", "Reads all of standard input, to the end, as one string."],
+    inln: ["func inln() -> string", "Reads the next line of standard input; `\"\"` once input runs out."],
     arr: ["func arr(...items) -> array", "An array of the items, in order."],
     set: ["func set(...items) -> set", "A set of the items."],
     pair: ["func pair(first, second) -> pair", "A pair of two values."],
