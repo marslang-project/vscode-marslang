@@ -9,6 +9,10 @@ itself.
 - **Syntax highlighting** for keywords, `fixed`/`hot`/`cold` bindings, type
   annotations, families and their methods, `@Decorator` markers, `takepkg`
   imports, error families, strings with escapes, and comments.
+- **Hover** over a name to see what it is: a function, family, or method shows
+  its signature and its `@Decorator.docstring`; a variable shows its type, noting
+  when that type comes from its first value rather than an annotation.
+  Built-ins, `std.Error` families, and decorator markers are described too.
 - **Diagnostics** from `marslang check`, shown where the error is. The
   interpreter reports the source line for syntax and import errors; for an error
   it cannot place, such as `unknown name 'nope'`, the extension marks where that
@@ -38,16 +42,24 @@ each keystroke.
 npm install
 npm test
 npm run package
-code --install-extension marslang-0.2.0.vsix
+code --install-extension marslang-0.3.0.vsix
 ```
 
 `npm test` tokenizes [test/sample.mars](test/sample.mars) with the same
-TextMate engine VS Code uses and asserts the scopes themes colour, then runs the
-real interpreter over broken programs and checks that each error lands on the
-line it belongs to. Point `MARSLANG` at a build to use a specific interpreter.
+TextMate engine VS Code uses and asserts the scopes themes colour, runs the real
+interpreter over broken programs and checks that each error lands on the line it
+belongs to, and checks what hovering each kind of name in the sample shows. Point
+`MARSLANG` at a build to use a specific interpreter; checks that need a newer
+interpreter than the one found are reported as skipped.
 
 Press `F5` in this repository to launch a VS Code window with the extension
 loaded and the sample open.
+
+## Hover
+
+Hover reads `marslang symbols`, added in rs-0.11.0, over the current text of the
+file, unsaved edits included. With an older interpreter, hovering still describes
+built-ins, but not your own declarations.
 
 ## Lines in error messages
 

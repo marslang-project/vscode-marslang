@@ -1,5 +1,6 @@
 takepkg std.math;
 takepkg std.Decorator;
+takepkg std.Error;
 
 // a comment
 /* a block
@@ -22,6 +23,10 @@ family Circle{
     }
 }
 
+@Decorator.docstring("""
+    A label for a name.
+    It mentions func and family, which stay part of the string.
+""")
 func label(string name) => "a family of func in a string";
 
 func m{
@@ -31,7 +36,7 @@ func m{
         out(c.size());
         out(counts.iget(0));
         out(label("x"));
-    } handle(TypeError e){
+    } handle(Error.TypeError e){
         out(e);
     } then {
         slout("done");

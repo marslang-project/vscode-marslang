@@ -9,12 +9,16 @@
 const vscode = require("vscode");
 const { execFile } = require("child_process");
 const { parseError } = require("./diagnostics");
+const { find, markdown, inCommentOrString } = require("./hover");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
 
 const LANGUAGE = "marslang";
+const EMPTY = { functions: [], families: [], variables: [] };
 let diagnostics;
+/// The last symbols read for each document: { version, symbols }.
+const symbolCache = new Map();
 
 function activate(context) {
     diagnostics = vscode.languages.createDiagnosticCollection(LANGUAGE);
@@ -28,7 +32,11 @@ function activate(context) {
         }),
         vscode.workspace.onDidSaveTextDocument((document) => check(document)),
         vscode.workspace.onDidOpenTextDocument((document) => check(document)),
-        vscode.workspace.onDidCloseTextDocument((document) => diagnostics.delete(document.uri))
+        vscode.workspace.onDidCloseTextDocument((document) => {
+            diagnostics.delete(document.uri);
+            symbolCache.delete(document.uri.toString());
+        }),
+        vscode.languages.registerHoverProvider(LANGUAGE, { provideHover })
     );
 
     vscode.workspace.textDocuments.forEach((document) => check(document));
@@ -107,6 +115,46 @@ function findWord(document, word) {
         if (found) return new vscode.Range(line, found.index, line, found.index + word.length);
     }
     return lineRange(document, 0);
+}
+
+/// What the document declares, from `marslang symbols` over its current text,
+/// unsaved edits included. While the text does not parse, the last result that
+/// did is kept, so hovers keep working mid-edit.
+function symbolsFor(document) {
+    const key = document.uri.toString();
+    const cached = symbolCache.get(key);
+    if (cached && cached.version === document.version) return Promise.resolve(cached.symbols);
+    return new Promise((resolve) => {
+        const fallback = () => resolve(cached ? cached.symbols : EMPTY);
+        const child = execFile(interpreter(), ["symbols", document.uri.fsPath, "--stdin"],
+            { timeout: 5000, maxBuffer: 16 * 1024 * 1024 }, (error, stdout) => {
+                if (error) return fallback();
+                try {
+                    const symbols = JSON.parse(stdout);
+                    symbolCache.set(key, { version: document.version, symbols });
+                    resolve(symbols);
+                } catch {
+                    fallback();
+                }
+            });
+        child.on("error", fallback);
+        child.stdin.on("error", () => {});
+        child.stdin.end(document.getText());
+    });
+}
+
+async function provideHover(document, position) {
+    const range = document.getWordRangeAtPosition(position, /[A-Za-z_][A-Za-z0-9_]*/);
+    if (!range) return null;
+    if (inCommentOrString(document.getText(), document.offsetAt(range.start))) return null;
+    const word = document.getText(range);
+    // `receiver.word`: the name before the dot, or "" when it is not a plain name.
+    const before = document.lineAt(position.line).text.slice(0, range.start.character);
+    const dotted = before.match(/([A-Za-z_][A-Za-z0-9_]*)?\s*\.\s*$/);
+    const receiver = dotted ? (dotted[1] || "") : null;
+    const symbols = await symbolsFor(document);
+    const text = markdown(symbols, find(symbols, word, position.line + 1, receiver));
+    return text ? new vscode.Hover(new vscode.MarkdownString(text), range) : null;
 }
 
 function runFile() {

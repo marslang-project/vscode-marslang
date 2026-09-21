@@ -32,7 +32,7 @@ function tokenize(grammar, source) {
         const result = grammar.tokenizeLine(text, state);
         for (const token of result.tokens) {
             const slice = text.slice(token.startIndex, token.endIndex);
-            if (slice.trim()) tokens.push({ text: slice, line: line + 1, scopes: token.scopes });
+            if (slice.trim()) tokens.push({ text: slice.trim(), line: line + 1, scopes: token.scopes });
         }
         state = result.ruleStack;
     });
@@ -54,11 +54,13 @@ const checks = [
     ["ret", "keyword.control.mars", "a control keyword"],
     ["me", "variable.language.me.mars", "the receiver"],
     ["out", "support.function.builtin.mars", "a builtin call"],
-    ["TypeError", "support.class.error.mars", "an error family"],
+    ["TypeError", "support.class.error.mars", "an error family, as Error.TypeError"],
     ["a family of func in a string", "string.quoted.double.mars", "keywords inside a string"],
     ["3.14159", "constant.numeric.float.mars", "a float literal"],
     ["42", "constant.numeric.integer.mars", "an integer literal"],
     ["=>", "keyword.operator.arrow.mars", "the expression-body arrow"],
+    ["It mentions func and family, which stay part of the string.", "string.quoted.triple.mars", "a line inside a triple-quoted string"],
+    ["docstring", "entity.name.function.decorator.mars", "the docstring decorator"],
 ];
 
 async function main() {

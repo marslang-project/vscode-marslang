@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.0
+
+- **Hover.** Functions, families, and methods show their signature and
+  docstring; variables show their type, and whether it was written or taken
+  from the first value; parameters, loop items, and caught errors say what they
+  are. Built-ins, `std.Error` families, and `std.Decorator` markers are
+  described too. Unsaved edits are included, and while the text does not parse
+  the last good result is kept. Needs marslang rs-0.11.0 or later for your own
+  declarations; built-ins work with any version.
+- Triple-quoted strings (`"""..."""`) are highlighted across lines, including
+  docstrings in `@Decorator.docstring(...)`.
+- `Error.TypeError` and the other `std.Error` families are highlighted as error
+  families.
+
 ## 0.2.0
 
 - Licensed under the Marslang Source License 1.0: source-available, free for
