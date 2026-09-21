@@ -10,6 +10,14 @@
     "url": "https://github.com/marslang-project/vscode-marslang.git"
   },
   "homepage": "https://marslang.kevin-z.com",
+  "bugs": {
+    "url": "https://github.com/marslang-project/vscode-marslang/issues"
+  },
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#17140f",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.75.0"
   },

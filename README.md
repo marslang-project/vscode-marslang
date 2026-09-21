@@ -54,3 +54,8 @@ loaded and the sample open.
 The interpreter reports positions from rs-0.9.1 onward. With rs-0.9.0 the
 diagnostics still appear, but every error without a position is placed on the
 name it quotes, or on the first line.
+
+## License
+
+No license has been chosen yet, so the usual default applies: the authors keep
+all rights. A license will be added here before it matters to anyone.
