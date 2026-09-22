@@ -7,6 +7,7 @@
   docstring and constructor, and hovering `math` names the package. A method
   called on a variable made by a package's family, such as `pile.push(...)`
   after `pile = containers.stack();`, is found too. Needs marslang rs-0.11.1.
+- `and`, `or`, and `not` are highlighted as the logical operators they are.
 
 ## 0.3.0
 

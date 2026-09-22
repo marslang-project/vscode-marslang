@@ -44,4 +44,5 @@ func m{
     }
     pile = containers.stack();
     pile.push(math.PI);
+    if (not pile.is_empty() and (pile.len() > 0 or false)){ out("full"); }
 }
