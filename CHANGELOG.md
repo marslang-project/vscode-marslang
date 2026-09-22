@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.2
+
+- `and`, `or`, and `not` now take the same colour as `if`, `while`, and `ret`
+  (purple in the default Dark+ and Light+ themes) instead of the plain
+  operator colour.
+
 ## 0.3.1
 
 - Hover explains the standard library and your own packages: `math.sqrt` shows

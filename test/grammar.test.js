@@ -61,9 +61,9 @@ const checks = [
     ["=>", "keyword.operator.arrow.mars", "the expression-body arrow"],
     ["It mentions func and family, which stay part of the string.", "string.quoted.triple.mars", "a line inside a triple-quoted string"],
     ["docstring", "entity.name.function.decorator.mars", "the docstring decorator"],
-    ["not", "keyword.operator.logical.mars", "the not operator"],
-    ["and", "keyword.operator.logical.mars", "the and operator"],
-    ["or", "keyword.operator.logical.mars", "the or operator"],
+    ["not", "keyword.control.logical.mars", "the not operator"],
+    ["and", "keyword.control.logical.mars", "the and operator"],
+    ["or", "keyword.control.logical.mars", "the or operator"],
 ];
 
 async function main() {

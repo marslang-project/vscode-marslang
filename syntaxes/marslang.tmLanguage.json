@@ -183,8 +183,8 @@
     "keywords": {
       "patterns": [
         {
-          "comment": "and, or, and not are Marslang's boolean operators.",
-          "name": "keyword.operator.logical.mars",
+          "comment": "and, or, and not are boolean operators, but they are words, so they take the keyword colour like if and while.",
+          "name": "keyword.control.logical.mars",
           "match": "\\b(and|or|not)\\b"
         },
         {
