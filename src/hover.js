@@ -67,7 +67,20 @@ function lineage(symbols, name) {
     return chain;
 }
 
+/// The package imported under `alias`, when `marslang symbols` describes packages.
+function packageNamed(symbols, alias) {
+    return (symbols.packages || []).find((p) => p.alias === alias) || null;
+}
+
 function method(symbols, familyName, name) {
+    // `containers.stack`: a family exported by an imported package.
+    const dot = familyName.indexOf(".");
+    if (dot > 0) {
+        const pkg = packageNamed(symbols, familyName.slice(0, dot));
+        const family = pkg && pkg.families.find((f) => f.name === familyName.slice(dot + 1));
+        const found = family && family.methods.find((m) => m.name === name);
+        return found ? { ...found, family: familyName } : null;
+    }
     for (const family of lineage(symbols, familyName)) {
         const found = family.methods.find((m) => m.name === name);
         if (found) return found;
@@ -81,6 +94,18 @@ function find(symbols, word, line, receiver = null) {
     const here = enclosing(symbols, line);
     if (receiver !== null) {
         if (receiver === "Decorator" && DECORATORS[word]) return { kind: "decorator", symbol: word };
+        const pkg = packageNamed(symbols, receiver);
+        if (pkg) {
+            const fn = pkg.functions.find((f) => f.name === word);
+            if (fn) return { kind: "function", symbol: { ...fn, family: null }, package: pkg };
+            const family = pkg.families.find((f) => f.name === word);
+            if (family) return { kind: "family", symbol: family, package: pkg };
+            // std.Error's members are the built-in families, described below.
+            if (BUILTINS[word] && /^[A-Z]/.test(word)) return { kind: "builtin", symbol: word };
+            const value = pkg.values.find((v) => v.name === word);
+            if (value) return { kind: "value", symbol: value, package: pkg };
+            return null;
+        }
         if (receiver === "me" && here && here.family) {
             const found = method(symbols, here.family, word);
             if (found) return { kind: "function", symbol: found };
@@ -105,6 +130,8 @@ function find(symbols, word, line, receiver = null) {
     const variable = symbols.variables.find((v) => v.name === word && v.scope === scope)
         || symbols.variables.find((v) => v.name === word && v.scope === null);
     if (variable) return { kind: "variable", symbol: variable };
+    const pkg = packageNamed(symbols, word);
+    if (pkg) return { kind: "package", symbol: pkg };
     const fn = symbols.functions.find((f) => f.name === word);
     if (fn) return { kind: "function", symbol: fn };
     const family = symbols.families.find((f) => f.name === word);
@@ -140,17 +167,33 @@ function markdown(symbols, found) {
         const [signature, text] = BUILTINS[symbol];
         return withDoc(signature, text, ["*built in*"]);
     }
+    if (kind === "package") {
+        const counts = [
+            [symbol.functions.length, "function", "functions"],
+            [symbol.families.length, "family", "families"],
+            [symbol.values.length, "value", "values"],
+        ].filter(([n]) => n > 0).map(([n, one, many]) => `${n} ${n === 1 ? one : many}`);
+        return withDoc(`(package) ${symbol.name}`, null, [`Imported as \`${symbol.alias}\`${counts.length ? ": " + counts.join(", ") : ""}`]);
+    }
+    if (kind === "value") {
+        const prefix = symbol.kind === "fixed" || symbol.kind === "hot" ? `${symbol.kind} ` : "";
+        const typed = symbol.type ? `: ${symbol.type}` : "";
+        return withDoc(`${prefix}${found.package.alias}.${symbol.name}${typed}`, null, [`*${found.package.name}*`]);
+    }
     if (kind === "function") {
-        const name = symbol.family ? `${symbol.family}.${symbol.name}` : symbol.name;
-        const notes = [];
+        const owner = symbol.family || (found.package ? found.package.alias : null);
+        const name = owner ? `${owner}.${symbol.name}` : symbol.name;
+        const notes = found.package ? [`*${found.package.name}*`] : [];
         if (symbol.access === "private") notes.push(`*private to ${symbol.family}*`);
         if (symbol.access === "subclass") notes.push(`*for ${symbol.family} and families inheriting from it*`);
         return withDoc(`func ${name}(${params(symbol)})`, symbol.doc, notes);
     }
     if (kind === "family") {
-        const header = symbol.parent ? `family ${symbol.name}(${symbol.parent})` : `family ${symbol.name}`;
-        const init = method(symbols, symbol.name, "init");
-        const notes = [init ? `Construct with \`${symbol.name}(${params(init)})\`` : `Construct with \`${symbol.name}()\``];
+        const full = found.package ? `${found.package.alias}.${symbol.name}` : symbol.name;
+        const header = symbol.parent ? `family ${full}(${symbol.parent})` : `family ${full}`;
+        const init = method(symbols, full, "init");
+        const notes = [init ? `Construct with \`${full}(${params(init)})\`` : `Construct with \`${full}()\``];
+        if (found.package) notes.push(`*${found.package.name}*`);
         const methods = symbol.methods.filter((m) => m.name !== "init" && m.access === "public").map((m) => `\`${m.name}\``);
         if (methods.length) notes.push(`Methods: ${methods.join(", ")}`);
         return withDoc(header, symbol.doc, notes);

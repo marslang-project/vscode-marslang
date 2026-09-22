@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.1
+
+- Hover explains the standard library and your own packages: `math.sqrt` shows
+  its signature and docstring, `math.PI` its type, `containers.stack` its
+  docstring and constructor, and hovering `math` names the package. A method
+  called on a variable made by a package's family, such as `pile.push(...)`
+  after `pile = containers.stack();`, is found too. Needs marslang rs-0.11.1.
+
 ## 0.3.0
 
 - **Hover.** Functions, families, and methods show their signature and

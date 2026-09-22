@@ -12,7 +12,9 @@ itself.
 - **Hover** over a name to see what it is: a function, family, or method shows
   its signature and its `@Decorator.docstring`; a variable shows its type, noting
   when that type comes from its first value rather than an annotation.
-  Built-ins, `std.Error` families, and decorator markers are described too.
+  Imported packages work the same way, so `math.sqrt` and `containers.stack`
+  show their docstrings. Built-ins, `std.Error` families, and decorator markers
+  are described too.
 - **Diagnostics** from `marslang check`, shown where the error is. The
   interpreter reports the source line for syntax and import errors; for an error
   it cannot place, such as `unknown name 'nope'`, the extension marks where that
@@ -42,7 +44,7 @@ each keystroke.
 npm install
 npm test
 npm run package
-code --install-extension marslang-0.3.0.vsix
+code --install-extension marslang-0.3.1.vsix
 ```
 
 `npm test` tokenizes [test/sample.mars](test/sample.mars) with the same
@@ -58,8 +60,9 @@ loaded and the sample open.
 ## Hover
 
 Hover reads `marslang symbols`, added in rs-0.11.0, over the current text of the
-file, unsaved edits included. With an older interpreter, hovering still describes
-built-ins, but not your own declarations.
+file, unsaved edits included. Imported packages are described from rs-0.11.1.
+With an older interpreter, hovering still describes built-ins, but not your own
+declarations.
 
 ## Lines in error messages
 

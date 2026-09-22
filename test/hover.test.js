@@ -43,22 +43,38 @@ if (!fs.existsSync(interpreter)) {
 if (symbols) {
     console.log("\nwhat hovering shows");
     const hover = (word, line, receiver = null) => markdown(symbols, find(symbols, word, line, receiver));
-    check("a function with a docstring", hover("label", 38),
+    // The 1-based line of the first line containing `needle`, so edits to the sample move the checks with it.
+    const lineOf = (needle) => source.split(/\r?\n/).findIndex((l) => l.includes(needle)) + 1;
+    check("a function with a docstring", hover("label", lineOf("out(label")),
         "func label(string name)", "A label for a name.\nIt mentions func and family, which stay part of the string.");
-    check("a family, with its constructor", hover("Circle", 34),
+    check("a family, with its constructor", hover("Circle", lineOf("c = Circle")),
         "family Circle", "Construct with `Circle(float r)`", "Methods: `size`");
-    check("a variable typed by its first value", hover("c", 36),
+    check("a variable typed by its first value", hover("c", lineOf("out(c.size")),
         "c: Circle", "Type of its first value");
-    check("a variable with a declared type", hover("counts", 37), "counts: array[int]");
-    check("a fixed binding", hover("pi", 22), "fixed pi: float");
-    check("a parameter", hover("r", 13), "(parameter) r: float");
-    check("a caught error", hover("e", 40), "(caught error) e: Error.TypeError");
-    check("a method through a typed variable", hover("size", 36, "c"), "func Circle.size()");
-    check("a private method through me", hover("squared", 22, "me"), "func Circle.squared()", "*private to Circle*");
-    check("an error family from std.Error", hover("TypeError", 39, "Error"), "family TypeError(Error)", "*built in*");
-    check("a decorator marker", hover("docstring", 26, "Decorator"), "@Decorator.docstring(text)");
-    check("a built-in function", hover("out", 36), "func out(...values)");
-    const nothing = hover("iget", 37, "counts");
+    check("a variable with a declared type", hover("counts", lineOf("counts.iget")), "counts: array[int]");
+    check("a fixed binding", hover("pi", lineOf("ret pi *")), "fixed pi: float");
+    check("a parameter", hover("r", lineOf("me.r = r")), "(parameter) r: float");
+    check("a caught error", hover("e", lineOf("out(e)")), "(caught error) e: Error.TypeError");
+    check("a method through a typed variable", hover("size", lineOf("out(c.size"), "c"), "func Circle.size()");
+    check("a private method through me", hover("squared", lineOf("me.squared"), "me"), "func Circle.squared()", "*private to Circle*");
+    check("an error family from std.Error", hover("TypeError", lineOf("handle(Error.TypeError"), "Error"), "family TypeError(Error)", "*built in*");
+    check("a decorator marker", hover("docstring", lineOf("@Decorator.docstring"), "Decorator"), "@Decorator.docstring(text)");
+    check("a built-in function", hover("out", lineOf("out(c.size")), "func out(...values)");
+    // Interpreters before package descriptions skip these.
+    if (!symbols.packages) {
+        console.log("  skip the package cases: this interpreter's symbols do not describe imported packages");
+    } else {
+        check("a std function with its docstring", hover("sqrt", lineOf("math.PI"), "math"),
+            "func math.sqrt([int,longint,float] x)", "Square root, as a float.", "*std.math*");
+        check("a std value", hover("PI", lineOf("math.PI"), "math"), "fixed math.PI: float");
+        check("a std family, with its constructor", hover("stack", lineOf("containers.stack"), "containers"),
+            "family containers.stack", "Last in, first out", "Construct with `containers.stack()`");
+        check("a method of a std family, through a variable", hover("push", lineOf("pile.push"), "pile"),
+            "func containers.stack.push(any item)", "Put item on top.");
+        check("an imported package's alias", hover("math", lineOf("math.PI")),
+            "(package) std.math", "Imported as `math`: 51 functions, 6 values");
+    }
+    const nothing = hover("iget", lineOf("counts.iget"), "counts");
     check("no guess for a method it cannot know", String(nothing), "null");
 }
 

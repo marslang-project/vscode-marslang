@@ -1,6 +1,7 @@
 takepkg std.math;
 takepkg std.Decorator;
 takepkg std.Error;
+takepkg std.containers;
 
 // a comment
 /* a block
@@ -41,4 +42,6 @@ func m{
     } then {
         slout("done");
     }
+    pile = containers.stack();
+    pile.push(math.PI);
 }
