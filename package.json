@@ -2,7 +2,7 @@
   "name": "marslang",
   "displayName": "Marslang",
   "description": "Marslang language support: syntax highlighting, hover with types and docstrings, and diagnostics from marslang check.",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "publisher": "marslang-project",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -31,6 +31,15 @@
     "mars"
   ],
   "main": "./src/extension.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "In a folder you have not trusted, marslang.path is read only from your user settings, so the folder cannot choose which program the extension runs.",
+      "restrictedConfigurations": [
+        "marslang.path"
+      ]
+    }
+  },
   "activationEvents": [
     "onLanguage:marslang"
   ],
@@ -88,7 +97,7 @@
         "marslang.path": {
           "type": "string",
           "default": "",
-          "description": "Path to the marslang executable. Empty looks for marslang on PATH, then in the directory the installer uses."
+          "description": "Path to the marslang executable. Empty looks for marslang on PATH, then in the directory the installer uses. In a folder you have not trusted, only the value in your user settings is used."
         },
         "marslang.check": {
           "type": "string",
@@ -107,7 +116,7 @@
     "vscode-textmate": "^9.0.0"
   },
   "scripts": {
-    "test": "node test/grammar.test.js && node test/diagnostics.test.js && node test/hover.test.js",
+    "test": "node test/grammar.test.js && node test/diagnostics.test.js && node test/hover.test.js && node test/manifest.test.js",
     "package": "npx --yes @vscode/vsce package --no-dependencies"
   }
 }

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.4
+
+- **Security:** in a folder you have not trusted, `marslang.path` is read only
+  from your user settings. Before, a folder's own `.vscode/settings.json` could
+  point it at a program of its choosing, which the extension then ran as soon
+  as a `.mars` file was opened. In trusted folders nothing changes.
+
 ## 0.3.3
 
 - Highlighting and hover for the built-ins of rs-0.14 and rs-0.15: `ord` and
