@@ -60,6 +60,10 @@ if (symbols) {
     check("an error family from std.Error", hover("TypeError", lineOf("handle(Error.TypeError"), "Error"), "family TypeError(Error)", "*built in*");
     check("a decorator marker", hover("docstring", lineOf("@Decorator.docstring"), "Decorator"), "@Decorator.docstring(text)");
     check("a built-in function", hover("out", lineOf("out(c.size")), "func out(...values)");
+    check("a code point built-in", hover("ord", lineOf("chr(ord")), "func ord(text) -> int");
+    check("a date constructor", hover("date", lineOf("day (date)")), "func date(year, month, day) -> date");
+    check("a duration constructor", hover("duration", lineOf("duration(90)")), "func duration(seconds) -> duration");
+    check("a variable annotated with a date", hover("day", lineOf("out(chr")), "day: date");
     // Interpreters before package descriptions skip these.
     if (!symbols.packages) {
         console.log("  skip the package cases: this interpreter's symbols do not describe imported packages");

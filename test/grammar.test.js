@@ -64,6 +64,10 @@ const checks = [
     ["not", "keyword.control.logical.mars", "the not operator"],
     ["and", "keyword.control.logical.mars", "the and operator"],
     ["or", "keyword.control.logical.mars", "the or operator"],
+    ["ord", "support.function.builtin.mars", "the ord built-in"],
+    ["chr", "support.function.builtin.mars", "the chr built-in"],
+    ["date", "support.type.mars", "the date kind"],
+    ["duration", "support.type.mars", "the duration kind"],
 ];
 
 async function main() {

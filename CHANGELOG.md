@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.3
+
+- Highlighting and hover for the built-ins of rs-0.14 and rs-0.15: `ord` and
+  `chr`, and the calendar kinds `date`, `datetime`, and `duration`, which are
+  coloured as types like `int` and explain their forms on hover.
+- `any`, `Function`, and `Family` are coloured as types too.
+
 ## 0.3.2
 
 - `and`, `or`, and `not` now take the same colour as `if`, `while`, and `ret`

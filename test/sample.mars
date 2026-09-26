@@ -45,4 +45,6 @@ func m{
     pile = containers.stack();
     pile.push(math.PI);
     if (not pile.is_empty() and (pile.len() > 0 or false)){ out("full"); }
+    day (date) = date(2026, 9, 24);
+    out(chr(ord("a")), day, duration(90));
 }

@@ -119,7 +119,7 @@
     },
     "annotation": {
       "comment": "A type in parentheses: x (array[int]) = ...; and parameter types.",
-      "match": "\\b(int|longint|float|string|bool|array|set|pair|map|dict)\\b",
+      "match": "\\b(int|longint|float|string|bool|any|date|datetime|duration|array|set|pair|map|dict|Function|Family)\\b",
       "name": "support.type.mars"
     },
     "strings": {
@@ -230,7 +230,7 @@
         },
         {
           "name": "support.function.builtin.mars",
-          "match": "\\b(out|slout|in|inln|arr|set|pair|map|dict|err|lasterr|a|s|p)\\b(?=\\s*\\()"
+          "match": "\\b(out|slout|in|inln|arr|set|pair|map|dict|err|lasterr|ord|chr|a|s|p)\\b(?=\\s*\\()"
         }
       ]
     },
