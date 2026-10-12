@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.5
+
+- Raw strings, new in marslang rs-0.16: `r"..."`, `r'...'`, and `r"""..."""`
+  are coloured as strings with their `r` prefix marked, and a backslash in one
+  is not shown as an escape, so regex patterns such as `r"\d+(\.\d+)?"` read
+  plainly.
+- Every escape Marslang has, `\b`, `\f`, `\v`, `\xHH`, and `\u{...}` among them,
+  is now coloured as one, instead of as a mistake.
+
 ## 0.3.4
 
 - **Security:** in a folder you have not trusted, `marslang.path` is read only

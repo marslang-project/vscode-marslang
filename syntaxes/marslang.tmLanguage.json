@@ -125,6 +125,38 @@
     "strings": {
       "patterns": [
         {
+          "comment": "r\"\"\"...\"\"\": a raw string over lines, where a backslash escapes nothing.",
+          "name": "string.quoted.triple.raw.mars",
+          "begin": "(?<![\\w])(r)\"\"\"",
+          "beginCaptures": {
+            "1": {
+              "name": "storage.type.string.mars"
+            }
+          },
+          "end": "\"\"\""
+        },
+        {
+          "comment": "r\"...\": a raw string, for regex patterns and Windows paths.",
+          "name": "string.quoted.double.raw.mars",
+          "begin": "(?<![\\w])(r)\"",
+          "beginCaptures": {
+            "1": {
+              "name": "storage.type.string.mars"
+            }
+          },
+          "end": "\"|$"
+        },
+        {
+          "name": "string.quoted.single.raw.mars",
+          "begin": "(?<![\\w])(r)'",
+          "beginCaptures": {
+            "1": {
+              "name": "storage.type.string.mars"
+            }
+          },
+          "end": "'|$"
+        },
+        {
           "name": "string.quoted.triple.mars",
           "begin": "\"\"\"",
           "end": "\"\"\"",
@@ -160,7 +192,7 @@
       "patterns": [
         {
           "name": "constant.character.escape.mars",
-          "match": "\\\\(?:[nrt0\\\\\"']|u[0-9A-Fa-f]{4})"
+          "match": "\\\\(?:[nrtbfv0\\\\\"']|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|u\\{[0-9A-Fa-f]{1,6}\\})"
         },
         {
           "name": "invalid.illegal.unknown-escape.mars",

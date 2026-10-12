@@ -68,6 +68,10 @@ const checks = [
     ["chr", "support.function.builtin.mars", "the chr built-in"],
     ["date", "support.type.mars", "the date kind"],
     ["duration", "support.type.mars", "the duration kind"],
+    ["r", "storage.type.string.mars", "the prefix of a raw string"],
+    ["\\d+(\\.\\d+)?", "string.quoted.double.raw.mars", "a raw string, its backslashes not escapes"],
+    ["C:\\new\\table", "string.quoted.single.raw.mars", "a raw string in single quotes"],
+    ["\\t", "constant.character.escape.mars", "an escape in an ordinary string"],
 ];
 
 async function main() {
