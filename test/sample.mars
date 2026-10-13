@@ -50,4 +50,5 @@ func m{
     pattern = r"\d+(\.\d+)?";
     folder = r'C:\new\table';
     out("tab\there", pattern, folder);
+    out(f"{pile.len()} items in {{a pile}}");
 }

@@ -72,6 +72,11 @@ const checks = [
     ["\\d+(\\.\\d+)?", "string.quoted.double.raw.mars", "a raw string, its backslashes not escapes"],
     ["C:\\new\\table", "string.quoted.single.raw.mars", "a raw string in single quotes"],
     ["\\t", "constant.character.escape.mars", "an escape in an ordinary string"],
+    ["f", "storage.type.string.mars", "the prefix of an f-string"],
+    ["items in", "string.interpolated.double.mars", "the text of an f-string"],
+    ["{", "punctuation.section.interpolation.begin.mars", "the brace that opens an f-string expression"],
+    ["len", "meta.interpolation.mars", "code inside f-string braces"],
+    ["{{", "constant.character.escape.mars", "a doubled brace in an f-string"],
 ];
 
 async function main() {
