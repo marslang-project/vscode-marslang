@@ -85,7 +85,8 @@ function toDiagnostic(document, message) {
 
     let range;
     if (error.line !== null) {
-        range = lineRange(document, error.line - 1);
+        // The name it is about, on that line, or else the whole line.
+        range = (error.name && findWordOnLine(document, error.name, error.line - 1)) || lineRange(document, error.line - 1);
     } else if (error.name) {
         // "unknown name 'nope'": point at where that name is used.
         range = findWord(document, error.name);
@@ -108,13 +109,19 @@ function lineRange(document, line) {
 
 /// The first whole-word use of `word`, or the first line when it is not found.
 function findWord(document, word) {
-    const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const pattern = new RegExp(`\\b${escaped}\\b`);
     for (let line = 0; line < document.lineCount; line += 1) {
-        const found = document.lineAt(line).text.match(pattern);
-        if (found) return new vscode.Range(line, found.index, line, found.index + word.length);
+        const found = findWordOnLine(document, word, line);
+        if (found) return found;
     }
     return lineRange(document, 0);
+}
+
+/// The first whole-word use of `word` on one line, or null.
+function findWordOnLine(document, word, line) {
+    if (line < 0 || line >= document.lineCount) return null;
+    const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const found = document.lineAt(line).text.match(new RegExp(`\\b${escaped}\\b`));
+    return found ? new vscode.Range(line, found.index, line, found.index + word.length) : null;
 }
 
 /// What the document declares, from `marslang symbols` over its current text,

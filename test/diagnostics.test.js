@@ -23,6 +23,8 @@ check("a located parser error", parseError("error: line 9: expected expression, 
     { line: 9, name: null, detail: "expected expression, got End" });
 check("an unlocated error names what it could not find", parseError("error: unknown name 'nope'"),
     { line: null, name: "nope", detail: "unknown name 'nope'" });
+check("a located error names what it is about", parseError("error: line 3: unknown name 'nope'"),
+    { line: 3, name: "nope", detail: "unknown name 'nope'" });
 check("a quoted phrase is not treated as a name", parseError("error: in package util: bad 'a b'"),
     { line: null, name: null, detail: "in package util: bad 'a b'" });
 check("trailing output is ignored", parseError("error: line 2: bad\nnote: something\n"),
@@ -58,6 +60,7 @@ if (!fs.existsSync(interpreter)) {
         ["a syntax error inside a method", "family C{\n    func init(){\n        me.r = 1;\n    }\n\n    func size(){\n        ret me.r *;\n    }\n}\nfunc m{}\n", { line: 7 }],
         ["a top-level import", "takepkg ;\nfunc m{}\n", { line: 1 }],
         ["an unknown name", "func m{\n    out(nope);\n}\n", { name: "nope" }],
+        ["the line of an unknown name", "func m{\n    x = 1;\n    out(nope);\n}\n", { line: 3 }],
     ];
 
     for (const [description, source, expected] of cases) {
