@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.6
+
+- f-strings, new in marslang rs-0.17: `f"Hello {name}"` is coloured as a
+  string, with the code inside its braces coloured as code.
+- The `bigint` kind is coloured as a type, and hovering `bigint(...)`
+  explains it.
+- With rs-0.17, every error from `marslang check` has a line, and the editor
+  underlines the exact name it is about, such as `nope` in "unknown name
+  'nope'", rather than the whole line.
+
 ## 0.3.5
 
 - Raw strings, new in marslang rs-0.16: `r"..."`, `r'...'`, and `r"""..."""`
