@@ -19,6 +19,7 @@ const BUILTINS = {
     lasterr: ["func lasterr()", "The most recently handled error, or `null`."],
     int: ["func int(value) -> int", "Converts to an int."],
     longint: ["func longint(value) -> longint", "Converts to a longint."],
+    bigint: ["func bigint(value) -> bigint", "A whole number of any size, from an int, longint, whole float, or decimal text: `bigint(\"123456789012345678901234567890\")`. Ints and longints mix with it; floats need `float(...)`."],
     float: ["func float(value) -> float", "Converts to a float."],
     string: ["func string(value) -> string", "Converts to a string."],
     ord: ["func ord(text) -> int", "The Unicode code point of a one-character string: `ord(\"a\")` is 97."],

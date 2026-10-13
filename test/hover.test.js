@@ -63,6 +63,7 @@ if (symbols) {
     check("a code point built-in", hover("ord", lineOf("chr(ord")), "func ord(text) -> int");
     check("a date constructor", hover("date", lineOf("day (date)")), "func date(year, month, day) -> date");
     check("a duration constructor", hover("duration", lineOf("duration(90)")), "func duration(seconds) -> duration");
+    check("a bigint constructor", hover("bigint", lineOf("bigint(2)")), "func bigint(value) -> bigint");
     check("a variable annotated with a date", hover("day", lineOf("out(chr")), "day: date");
     // Interpreters before package descriptions skip these.
     if (!symbols.packages) {

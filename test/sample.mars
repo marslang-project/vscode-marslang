@@ -51,4 +51,5 @@ func m{
     folder = r'C:\new\table';
     out("tab\there", pattern, folder);
     out(f"{pile.len()} items in {{a pile}}");
+    huge (bigint) = bigint(2) ** 100;
 }
