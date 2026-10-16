@@ -277,7 +277,7 @@
         },
         {
           "name": "keyword.control.mars",
-          "match": "\\b(if|elif|else|while|repeat|for|break|continue|ret|run|handle|then)\\b"
+          "match": "\\b(if|elif|else|while|repeat|for|break|continue|ret|run|handle|then|match)\\b"
         },
         {
           "name": "storage.modifier.mars",

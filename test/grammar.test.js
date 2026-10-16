@@ -69,6 +69,7 @@ const checks = [
     ["date", "support.type.mars", "the date kind"],
     ["duration", "support.type.mars", "the duration kind"],
     ["bigint", "support.type.mars", "the bigint kind"],
+    ["match", "keyword.control.mars", "the match keyword"],
     ["r", "storage.type.string.mars", "the prefix of a raw string"],
     ["\\d+(\\.\\d+)?", "string.quoted.double.raw.mars", "a raw string, its backslashes not escapes"],
     ["C:\\new\\table", "string.quoted.single.raw.mars", "a raw string in single quotes"],
