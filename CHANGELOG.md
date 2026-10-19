@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.7
+
+- `match`, new in marslang rs-0.18, is coloured as a keyword like `if`
+  and `while`.
+
 ## 0.3.6
 
 - f-strings, new in marslang rs-0.17: `f"Hello {name}"` is coloured as a
