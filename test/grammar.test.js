@@ -70,6 +70,8 @@ const checks = [
     ["duration", "support.type.mars", "the duration kind"],
     ["bigint", "support.type.mars", "the bigint kind"],
     ["match", "keyword.control.mars", "the match keyword"],
+    ["await", "keyword.control.mars", "the await keyword"],
+    ["task", "support.type.mars", "the task kind"],
     ["r", "storage.type.string.mars", "the prefix of a raw string"],
     ["\\d+(\\.\\d+)?", "string.quoted.double.raw.mars", "a raw string, its backslashes not escapes"],
     ["C:\\new\\table", "string.quoted.single.raw.mars", "a raw string in single quotes"],

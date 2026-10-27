@@ -119,7 +119,7 @@
     },
     "annotation": {
       "comment": "A type in parentheses: x (array[int]) = ...; and parameter types.",
-      "match": "\\b(int|longint|bigint|float|string|bool|any|date|datetime|duration|array|set|pair|map|dict|Function|Family)\\b",
+      "match": "\\b(int|longint|bigint|task|float|string|bool|any|date|datetime|duration|array|set|pair|map|dict|Function|Family)\\b",
       "name": "support.type.mars"
     },
     "strings": {
@@ -277,7 +277,7 @@
         },
         {
           "name": "keyword.control.mars",
-          "match": "\\b(if|elif|else|while|repeat|for|break|continue|ret|run|handle|then|match)\\b"
+          "match": "\\b(if|elif|else|while|repeat|for|break|continue|ret|run|handle|then|match|await|async)\\b"
         },
         {
           "name": "storage.modifier.mars",

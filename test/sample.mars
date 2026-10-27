@@ -2,6 +2,7 @@ takepkg std.math;
 takepkg std.Decorator;
 takepkg std.Error;
 takepkg std.containers;
+takepkg std.async;
 
 // a comment
 /* a block
@@ -52,6 +53,8 @@ func m{
     out("tab\there", pattern, folder);
     out(f"{pile.len()} items in {{a pile}}");
     huge (bigint) = bigint(2) ** 100;
+    later (task) = async.spawn(func() => 1);
+    out(await later);
     match (huge){
         1 => out("one");
         _ => out("many");

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.8
+
+- `async` and `await`, new in marslang rs-0.19, are coloured as keywords, and
+  the `task` kind as a type.
+- Blocks that open with `{` on the next line, also new in rs-0.19, are no
+  longer marked as errors.
+
 ## 0.3.7
 
 - `match`, new in marslang rs-0.18, is coloured as a keyword like `if`
